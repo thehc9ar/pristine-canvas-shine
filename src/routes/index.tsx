@@ -1,45 +1,51 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "Sobre o Projeto | Soluções simples e eficientes" },
+      {
+        name: "description",
+        content:
+          "Conheça o projeto: foco em inovação, qualidade técnica e uma experiência de usuário simples e direta.",
+      },
+      { property: "og:title", content: "Sobre o Projeto" },
+      {
+        property: "og:description",
+        content:
+          "Projeto focado em inovação, qualidade técnica e experiência de usuário simples e direta.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
+    ],
+  }),
   component: Index,
 });
 
- function Index() {
-   return (
-     <div className="relative min-h-screen bg-background">
-       <main className="relative container mx-auto px-4 py-16 sm:px-6 lg:px-8">
-         <section className="mx-auto max-w-3xl text-center">
-           <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
-             Sobre o Projeto
-           </h1>
-           <p className="mt-6 text-lg leading-8 text-muted-foreground">
-             Este projeto foi desenvolvido com o objetivo de criar soluções inovadoras e eficientes, focando na experiência do usuário e na qualidade técnica. Buscamos constantemente superar desafios e entregar resultados que agreguem valor real aos nossos usuários.
-           </p>
-         </section>
+const destaques = [
+  "Inovação",
+  "Qualidade",
+  "Foco no usuário",
+] as const;
 
-         <section className="mt-20">
-           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-             <div className="rounded-2xl border border-border bg-card p-8 shadow-sm transition-all hover:shadow-md">
-               <h3 className="text-xl font-semibold text-foreground">Inovação</h3>
-               <p className="mt-4 text-muted-foreground">
-                 Utilizamos as tecnologias mais recentes para garantir que o projeto esteja sempre na vanguarda do mercado.
-               </p>
-             </div>
-             <div className="rounded-2xl border border-border bg-card p-8 shadow-sm transition-all hover:shadow-md">
-               <h3 className="text-xl font-semibold text-foreground">Qualidade</h3>
-               <p className="mt-4 text-muted-foreground">
-                 Foco total em performance, acessibilidade e design responsivo para todos os dispositivos.
-               </p>
-             </div>
-             <div className="rounded-2xl border border-border bg-card p-8 shadow-sm transition-all hover:shadow-md">
-               <h3 className="text-xl font-semibold text-foreground">Foco no Usuário</h3>
-               <p className="mt-4 text-muted-foreground">
-                 Cada detalhe é pensado para proporcionar a melhor experiência possível para quem utiliza nossa plataforma.
-               </p>
-             </div>
-           </div>
-         </section>
-       </main>
-     </div>
-   );
- }
+function Index() {
+  return (
+    <main className="mx-auto flex min-h-screen max-w-2xl flex-col justify-center px-6 py-20">
+      <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+        Sobre o Projeto
+      </h1>
+      <p className="mt-5 text-base leading-7 text-muted-foreground">
+        Um projeto feito para resolver problemas reais com simplicidade: boa
+        experiência de uso e qualidade técnica, sem excesso.
+      </p>
+      <ul className="mt-8 space-y-2 text-sm text-muted-foreground">
+        {destaques.map((item) => (
+          <li key={item} className="flex items-center gap-2">
+            <span aria-hidden className="size-1.5 rounded-full bg-foreground" />
+            {item}
+          </li>
+        ))}
+      </ul>
+    </main>
+  );
+}
