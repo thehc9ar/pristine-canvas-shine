@@ -101,7 +101,6 @@ function RootShell({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        estamos no modo build. altere o tema para cinza
         {children}
         <Scripts />
       </body>
