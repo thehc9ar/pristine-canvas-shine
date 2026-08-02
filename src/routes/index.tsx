@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import backgroundAsset from "../assets/background.jpeg.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -7,11 +6,7 @@ export const Route = createFileRoute("/")({
 
  function Index() {
    return (
-     <div
-       className="relative min-h-screen bg-background bg-cover bg-center bg-fixed bg-no-repeat"
-       style={{ backgroundImage: `url(${backgroundAsset.url})` }}
-     >
-       <div className="absolute inset-0 bg-background/70" aria-hidden="true" />
+     <div className="relative min-h-screen bg-background">
        <main className="relative container mx-auto px-4 py-16 sm:px-6 lg:px-8">
          <section className="mx-auto max-w-3xl text-center">
            <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
