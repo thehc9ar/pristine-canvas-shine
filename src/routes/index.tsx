@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { SnakeOverlay } from "@/components/snake-overlay";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -30,15 +31,16 @@ const destaques = [
 
 function Index() {
   return (
-    <main className="mx-auto flex min-h-screen max-w-2xl flex-col justify-center px-6 py-20">
-      <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+    <main className="relative mx-auto flex min-h-screen max-w-2xl flex-col justify-center px-6 py-20">
+      <SnakeOverlay />
+      <h1 className="relative text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
         Sobre o Projeto
       </h1>
-      <p className="mt-5 text-base leading-7 text-muted-foreground">
+      <p className="relative mt-5 text-base leading-7 text-muted-foreground">
         Um projeto feito para resolver problemas reais com simplicidade: boa
         experiência de uso e qualidade técnica, sem excesso.
       </p>
-      <ul className="mt-8 space-y-2 text-sm text-muted-foreground">
+      <ul className="relative mt-8 space-y-2 text-sm text-muted-foreground">
         {destaques.map((item) => (
           <li key={item} className="flex items-center gap-2">
             <span aria-hidden className="size-1.5 rounded-full bg-foreground" />
