@@ -13,36 +13,59 @@ export function MatrixBackground({ className }: { className?: string }) {
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+    const fontSize = 16;
+    let columns = Math.floor(window.innerWidth / fontSize);
+    let drops: number[] = new Array(columns)
+      .fill(1)
+      .map(() => Math.floor(Math.random() * -50));
+
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       canvas.width = window.innerWidth * dpr;
       canvas.height = window.innerHeight * dpr;
-      ctx.scale(dpr, dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      const newColumns = Math.floor(window.innerWidth / fontSize);
+      if (newColumns !== columns) {
+        columns = newColumns;
+        drops = new Array(columns).fill(1).map(() => Math.floor(Math.random() * -50));
+      }
     };
 
     window.addEventListener("resize", resize);
     resize();
 
-    const fontSize = 16;
-    let columns = Math.floor(window.innerWidth / fontSize);
-    const drops: number[] = new Array(columns).fill(1);
-
-    const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const chars =
+      "アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン0123456789AZXCVBNM";
 
     const draw = () => {
-      // Semi-transparent black to create trailing effect
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      // Semi-transparent black to create trailing rain effect
+      ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
       ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
-      ctx.fillStyle = "oklch(0.78 0.22 145)"; // Matrix Green
       ctx.font = `${fontSize}px monospace`;
 
       for (let i = 0; i < drops.length; i++) {
-        const text = chars.charAt(Math.floor(Math.random() * chars.length));
-        ctx.fillText(text, i * fontSize, drops[i]! * fontSize);
+        const char = chars.charAt(Math.floor(Math.random() * chars.length));
+        const x = i * fontSize;
+        const y = drops[i]! * fontSize;
 
-        if (drops[i]! * fontSize > window.innerHeight && Math.random() > 0.975) {
-          drops[i] = 0;
+        if (y > 0) {
+          // Bright glowing head character for the rain drop
+          ctx.fillStyle = "#e0ffe0";
+          ctx.shadowColor = "#00ff66";
+          ctx.shadowBlur = 8;
+          ctx.fillText(char, x, y);
+
+          // Green character trail right above
+          const prevChar = chars.charAt(Math.floor(Math.random() * chars.length));
+          ctx.fillStyle = "oklch(0.78 0.22 145)";
+          ctx.shadowBlur = 0;
+          ctx.fillText(prevChar, x, y - fontSize);
+        }
+
+        if (y > window.innerHeight && Math.random() > 0.975) {
+          drops[i] = Math.floor(Math.random() * -20);
         }
         drops[i]++;
       }
