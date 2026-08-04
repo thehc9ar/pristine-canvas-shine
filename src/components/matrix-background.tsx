@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-/** Matrix Digital Rain component */
+/** Matrix Digital Rain component with calmer green/teal colors */
 export function MatrixBackground({ className }: { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -13,7 +13,7 @@ export function MatrixBackground({ className }: { className?: string }) {
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    const fontSize = 16;
+    const fontSize = 14;
     let columns = Math.floor(window.innerWidth / fontSize);
     let drops: number[] = new Array(columns)
       .fill(0)
@@ -36,11 +36,11 @@ export function MatrixBackground({ className }: { className?: string }) {
     resize();
 
     const chars =
-      "アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン0123456789AZXCVBNM";
+      "ZABELE0123456789STORECRM Matrix010101";
 
     const draw = () => {
-      // Semi-transparent black to create trailing rain effect
-      ctx.fillStyle = "rgba(0, 0, 0, 0.08)";
+      // Semi-transparent calm dark background for soft matrix trail
+      ctx.fillStyle = "rgba(6, 12, 10, 0.12)";
       ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
       ctx.font = `${fontSize}px monospace`;
@@ -51,20 +51,20 @@ export function MatrixBackground({ className }: { className?: string }) {
         const y = drops[i]! * fontSize;
 
         if (y > 0) {
-          // Bright glowing head character for the rain drop
-          ctx.fillStyle = "#e0ffe0";
-          ctx.shadowColor = "#00ff66";
-          ctx.shadowBlur = 8;
+          // Soft calm glow head character
+          ctx.fillStyle = "#a7f3d0";
+          ctx.shadowColor = "#10b981";
+          ctx.shadowBlur = 4;
           ctx.fillText(char, x, y);
 
-          // Green character trail right above
+          // Calmer emerald/teal trailing characters
           const prevChar = chars.charAt(Math.floor(Math.random() * chars.length));
-          ctx.fillStyle = "#00ff66";
+          ctx.fillStyle = "#0d9488";
           ctx.shadowBlur = 0;
           ctx.fillText(prevChar, x, y - fontSize);
         }
 
-        if (y > window.innerHeight && Math.random() > 0.975) {
+        if (y > window.innerHeight && Math.random() > 0.98) {
           drops[i] = Math.floor(Math.random() * -20);
         }
         drops[i]++;
@@ -76,7 +76,7 @@ export function MatrixBackground({ className }: { className?: string }) {
       return;
     }
 
-    const interval = setInterval(draw, 33);
+    const interval = setInterval(draw, 45);
 
     return () => {
       clearInterval(interval);
@@ -87,7 +87,7 @@ export function MatrixBackground({ className }: { className?: string }) {
   return (
     <canvas
       ref={canvasRef}
-      className={className ?? "fixed inset-0 z-0 h-full w-full bg-black"}
+      className={className ?? "fixed inset-0 z-0 h-full w-full bg-[#040807]"}
       aria-hidden
     />
   );

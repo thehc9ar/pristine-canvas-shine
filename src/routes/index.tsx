@@ -1,63 +1,270 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
 import { MatrixBackground } from "@/components/matrix-background";
-import { SnakeOverlay } from "@/components/snake-overlay";
+import { Header } from "@/components/crm/Header";
+import { ClientesTab } from "@/components/crm/ClientesTab";
+import { CobrancasTab } from "@/components/crm/CobrancasTab";
+import { ProdutosTab } from "@/components/crm/ProdutosTab";
+import { EstoqueTab } from "@/components/crm/EstoqueTab";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
+import { Users, CreditCard, Package, Layers, Lock, Mail, Key, Shield, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export const Route = createFileRoute("/")({
   component: Index,
 });
 
+type TabType = "clientes" | "cobrancas" | "produtos" | "estoque";
+
 function Index() {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<TabType>("clientes");
+  const [userEmail, setUserEmail] = useState<string | null>(null);
+
+  // Auth Form State
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [authError, setAuthError] = useState<string | null>(null);
+  const [isRegistering, setIsRegistering] = useState(false);
+
+  useEffect(() => {
+    // Check initial Supabase auth state if configured
+    if (isSupabaseConfigured) {
+      supabase.auth.getSession().then(({ data: { session } }) => {
+        if (session) {
+          setIsAuthenticated(true);
+          setUserEmail(session.user.email ?? null);
+        }
+      });
+
+      const {
+        data: { subscription },
+      } = supabase.auth.onAuthStateChange((_event, session) => {
+        if (session) {
+          setIsAuthenticated(true);
+          setUserEmail(session.user.email ?? null);
+        } else {
+          setIsAuthenticated(false);
+          setUserEmail(null);
+        }
+      });
+
+      return () => subscription.unsubscribe();
+    }
+  }, []);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setAuthError(null);
+
+    if (isSupabaseConfigured) {
+      try {
+        if (isRegistering) {
+          const { error } = await supabase.auth.signUp({
+            email,
+            password,
+          });
+          if (error) throw error;
+          alert("Cadastro efetuado! Verifique seu e-mail para confirmar a conta.");
+        } else {
+          const { error } = await supabase.auth.signInWithPassword({
+            email,
+            password,
+          });
+          if (error) throw error;
+        }
+      } catch (err: any) {
+        setAuthError(err.message || "Erro de autenticação.");
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      // Demo authentication fallback mode when user hasn't connected Supabase project yet
+      setTimeout(() => {
+        setIsAuthenticated(true);
+        setUserEmail(email || "admin@zabele.store");
+        setLoading(false);
+      }, 500);
+    }
+  };
+
+  const handleDemoAccess = () => {
+    setIsAuthenticated(true);
+    setUserEmail("demo@zabele.store");
+  };
+
+  const handleLogout = async () => {
+    if (isSupabaseConfigured) {
+      await supabase.auth.signOut();
+    }
+    setIsAuthenticated(false);
+    setUserEmail(null);
+  };
+
   return (
-    <main className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-black select-none">
-      <MatrixBackground className="fixed inset-0 z-0 h-full w-full bg-black" />
-      <SnakeOverlay className="pointer-events-none fixed inset-0 h-full w-full z-0" />
-      <div className="relative z-10 text-center px-4 pointer-events-none flex flex-col items-center justify-center">
-        {/* Portal estilo Rick & Morty */}
-        <div className="relative mb-8 flex items-center justify-center">
-          <div className="absolute w-44 h-44 md:w-60 md:h-60 rounded-full bg-cyan-500/30 blur-2xl animate-pulse" />
-          <div className="relative w-40 h-40 md:w-56 md:h-56 animate-portal-pulse">
-            <svg viewBox="0 0 200 200" className="w-full h-full overflow-visible">
-              <defs>
-                <radialGradient id="rick-portal-grad" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stopColor="#e0ffff" />
-                  <stop offset="25%" stopColor="#00ffff" />
-                  <stop offset="60%" stopColor="#00b3b3" />
-                  <stop offset="85%" stopColor="#004d4d" />
-                  <stop offset="100%" stopColor="#001a1a" stopOpacity="0.9" />
-                </radialGradient>
-                <filter id="rick-portal-glow" x="-50%" y="-50%" width="200%" height="200%">
-                  <feGaussianBlur stdDeviation="5" result="blur" />
-                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                </filter>
-              </defs>
+    <main className="relative min-h-screen w-full bg-[#040807] text-emerald-100 font-sans selection:bg-emerald-500 selection:text-black">
+      {/* Background Matrix Rain */}
+      <MatrixBackground className="fixed inset-0 z-0 h-full w-full bg-[#040807]" />
 
-              <circle cx="100" cy="100" r="90" fill="url(#rick-portal-grad)" filter="url(#rick-portal-glow)" />
+      {!isAuthenticated ? (
+        /* LOGIN SCREEN */
+        <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-12">
+          <div className="w-full max-w-md bg-[#09120e]/90 border border-emerald-500/30 rounded-2xl p-6 sm:p-8 backdrop-blur-xl shadow-[0_0_40px_rgba(16,185,129,0.15)]">
+            <div className="text-center space-y-2 mb-8">
+              <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-950 border border-emerald-500/40 text-emerald-400 font-mono text-2xl font-bold shadow-[0_0_20px_rgba(16,185,129,0.3)] mb-2">
+                Z
+              </div>
+              <h1 className="text-2xl font-bold font-mono tracking-wide text-emerald-100 uppercase">
+                Zabelê Store
+              </h1>
+              <p className="text-xs text-emerald-400/70 font-mono">
+                SISTEMA CRM • ACESSO RESTRITO
+              </p>
+            </div>
 
-              <g className="animate-[spin_5s_linear_infinite] origin-center opacity-85">
-                <ellipse cx="100" cy="100" rx="80" ry="60" fill="none" stroke="#80ffff" strokeWidth="5" strokeDasharray="45 20 15 25" />
-                <ellipse cx="100" cy="100" rx="65" ry="75" fill="none" stroke="#00ffff" strokeWidth="6" strokeDasharray="30 25 10 20" />
-                <ellipse cx="100" cy="100" rx="50" ry="40" fill="none" stroke="#00e5ff" strokeWidth="7" strokeDasharray="25 15 20 10" />
-              </g>
+            <form onSubmit={handleLogin} className="space-y-4">
+              {authError && (
+                <div className="bg-red-950/60 border border-red-500/40 p-3 rounded-lg text-xs font-mono text-red-300">
+                  {authError}
+                </div>
+              )}
 
-              <g className="animate-[spin_3.5s_linear_infinite_reverse] origin-center opacity-90">
-                <ellipse cx="100" cy="100" rx="85" ry="85" fill="none" stroke="#00bfff" strokeWidth="4" strokeDasharray="60 30" />
-                <ellipse cx="100" cy="100" rx="55" ry="70" fill="none" stroke="#b2ffff" strokeWidth="5" strokeDasharray="20 30 10 20" />
-                <ellipse cx="100" cy="100" rx="35" ry="30" fill="none" stroke="#00f5ff" strokeWidth="6" strokeDasharray="15 15" />
-              </g>
+              <div>
+                <label className="text-xs font-mono text-emerald-400 mb-1.5 block flex items-center gap-1.5">
+                  <Mail className="h-3.5 w-3.5" /> E-mail
+                </label>
+                <Input
+                  required
+                  type="email"
+                  placeholder="usuario@zabele.store"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="bg-black/60 border-emerald-500/30 text-emerald-100 focus:border-emerald-400 focus:ring-emerald-400/20"
+                />
+              </div>
 
-              <circle cx="100" cy="100" r="16" fill="#e0ffff" className="animate-ping opacity-75 origin-center" />
-              <circle cx="100" cy="100" r="12" fill="#ffffff" />
-            </svg>
+              <div>
+                <label className="text-xs font-mono text-emerald-400 mb-1.5 block flex items-center gap-1.5">
+                  <Key className="h-3.5 w-3.5" /> Senha
+                </label>
+                <Input
+                  required
+                  type="password"
+                  placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="bg-black/60 border-emerald-500/30 text-emerald-100 focus:border-emerald-400 focus:ring-emerald-400/20"
+                />
+              </div>
+
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-emerald-600 hover:bg-emerald-500 text-black font-semibold font-mono h-10 mt-2 shadow-lg shadow-emerald-900/30 cursor-pointer"
+              >
+                {loading
+                  ? "Processando..."
+                  : isRegistering
+                  ? "Criar Conta Supabase"
+                  : "Entrar no Sistema"}
+              </Button>
+            </form>
+
+            <div className="mt-4 text-center">
+              <button
+                type="button"
+                onClick={() => setIsRegistering(!isRegistering)}
+                className="text-xs text-emerald-400/70 hover:text-emerald-300 font-mono underline cursor-pointer"
+              >
+                {isRegistering
+                  ? "Já possui uma conta? Fazer Login"
+                  : "Não tem conta? Cadastrar via Supabase"}
+              </button>
+            </div>
+
+            {!isSupabaseConfigured && (
+              <div className="mt-6 pt-6 border-t border-emerald-500/10 text-center">
+                <p className="text-[11px] text-emerald-500/80 font-mono mb-3">
+                  Projeto Supabase ainda não conectado.
+                </p>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={handleDemoAccess}
+                  className="w-full border-emerald-500/30 text-emerald-300 hover:bg-emerald-950/50 font-mono text-xs cursor-pointer"
+                >
+                  Entrar no Modo Demonstração <ArrowRight className="ml-1 h-3.5 w-3.5" />
+                </Button>
+              </div>
+            )}
           </div>
         </div>
+      ) : (
+        /* CRM DASHBOARD SCREEN */
+        <div className="relative z-10 min-h-screen flex flex-col">
+          <Header userEmail={userEmail} onLogout={handleLogout} />
 
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-neon-white drop-shadow-[0_0_10px_rgba(0,255,100,0.4)]">
-          INOVAÇÃO SEM LIMITES
-        </h1>
-        <p className="mt-4 font-mono text-sm md:text-base text-emerald-400/80 tracking-widest uppercase">
-          Matrix Rain & Retro Snake
-        </p>
-      </div>
+          <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 space-y-6">
+            {/* Navigation Tabs */}
+            <nav className="flex flex-wrap gap-2 border-b border-emerald-500/20 pb-3">
+              <button
+                onClick={() => setActiveTab("clientes")}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-mono text-sm font-medium transition-all cursor-pointer ${
+                  activeTab === "clientes"
+                    ? "bg-emerald-600 text-black shadow-lg shadow-emerald-900/40"
+                    : "bg-[#09120e]/60 text-emerald-300 hover:bg-emerald-950/40 border border-emerald-500/20"
+                }`}
+              >
+                <Users className="h-4 w-4" /> Clientes
+              </button>
+
+              <button
+                onClick={() => setActiveTab("cobrancas")}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-mono text-sm font-medium transition-all cursor-pointer ${
+                  activeTab === "cobrancas"
+                    ? "bg-emerald-600 text-black shadow-lg shadow-emerald-900/40"
+                    : "bg-[#09120e]/60 text-emerald-300 hover:bg-emerald-950/40 border border-emerald-500/20"
+                }`}
+              >
+                <CreditCard className="h-4 w-4" /> Cobranças
+              </button>
+
+              <button
+                onClick={() => setActiveTab("produtos")}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-mono text-sm font-medium transition-all cursor-pointer ${
+                  activeTab === "produtos"
+                    ? "bg-emerald-600 text-black shadow-lg shadow-emerald-900/40"
+                    : "bg-[#09120e]/60 text-emerald-300 hover:bg-emerald-950/40 border border-emerald-500/20"
+                }`}
+              >
+                <Package className="h-4 w-4" /> Produtos
+              </button>
+
+              <button
+                onClick={() => setActiveTab("estoque")}
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-mono text-sm font-medium transition-all cursor-pointer ${
+                  activeTab === "estoque"
+                    ? "bg-emerald-600 text-black shadow-lg shadow-emerald-900/40"
+                    : "bg-[#09120e]/60 text-emerald-300 hover:bg-emerald-950/40 border border-emerald-500/20"
+                }`}
+              >
+                <Layers className="h-4 w-4" /> Estoque
+              </button>
+            </nav>
+
+            {/* Tab Views */}
+            <div className="pt-2">
+              {activeTab === "clientes" && <ClientesTab />}
+              {activeTab === "cobrancas" && <CobrancasTab />}
+              {activeTab === "produtos" && <ProdutosTab />}
+              {activeTab === "estoque" && <EstoqueTab />}
+            </div>
+          </main>
+        </div>
+      )}
     </main>
   );
 }
