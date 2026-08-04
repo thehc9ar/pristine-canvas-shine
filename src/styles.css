@@ -146,19 +146,19 @@
 @utility text-neon-white {
   color: #ffffff;
   text-shadow:
-    0 0 2px #ffffff,
+    0 0 5px #ffffff,
     0 0 10px #ffffff,
     0 0 20px #ffffff,
-    0 0 40px rgba(255, 255, 255, 0.8),
-    0 0 80px rgba(255, 255, 255, 0.6);
+    0 0 40px #ffffff,
+    0 0 80px #ffffff;
 }
 
 .text-neon-white {
   color: #ffffff;
   text-shadow:
-    0 0 2px #ffffff,
+    0 0 5px #ffffff,
     0 0 10px #ffffff,
     0 0 20px #ffffff,
-    0 0 40px rgba(255, 255, 255, 0.8),
-    0 0 80px rgba(255, 255, 255, 0.6);
+    0 0 40px #ffffff,
+    0 0 80px #ffffff;
 }
