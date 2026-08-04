@@ -33,8 +33,8 @@ function Index() {
   return (
     <main className="relative mx-auto flex min-h-screen max-w-2xl flex-col justify-center px-6 py-20">
       <SnakeOverlay />
-      <h1 className="relative text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-        Sobre o Projeto
+      <h1 className="relative text-3xl font-bold tracking-tight text-destructive sm:text-5xl uppercase italic">
+        Inovação Sem Limites
       </h1>
       <p className="relative mt-5 text-base leading-7 text-muted-foreground">
         Um projeto feito para resolver problemas reais com simplicidade: boa
