@@ -142,3 +142,12 @@
     color: var(--color-foreground);
   }
 }
+
+.text-neon-white {
+  color: #ffffff;
+  text-shadow:
+    0 0 5px #ffffff,
+    0 0 10px #ffffff,
+    0 0 20px #ffffff,
+    0 0 40px #ffffff;
+}
