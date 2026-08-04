@@ -185,7 +185,28 @@
     filter: drop-shadow(0 0 35px rgba(128, 255, 255, 1)) drop-shadow(0 0 70px rgba(0, 255, 255, 0.9));
   }
 }
-
 .animate-portal-pulse {
+  animation: portal-pulse 3s ease-in-out infinite;
+}
+
+@keyframes neon-z-flip {
+  0% {
+    transform: perspective(500px) rotateY(0deg);
+    filter: drop-shadow(0 0 10px rgba(52, 211, 153, 0.8)) drop-shadow(0 0 25px rgba(16, 185, 129, 0.6));
+  }
+  50% {
+    transform: perspective(500px) rotateY(180deg);
+    filter: drop-shadow(0 0 20px rgba(167, 243, 208, 1)) drop-shadow(0 0 40px rgba(16, 185, 129, 0.9));
+  }
+  100% {
+    transform: perspective(500px) rotateY(360deg);
+    filter: drop-shadow(0 0 10px rgba(52, 211, 153, 0.8)) drop-shadow(0 0 25px rgba(16, 185, 129, 0.6));
+  }
+}
+
+.animate-neon-z-flip {
+  animation: neon-z-flip 2s infinite ease-in-out;
+  transform-style: preserve-3d;
+}
   animation: portal-pulse 3s ease-in-out infinite;
 }

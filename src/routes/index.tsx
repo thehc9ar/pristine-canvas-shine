@@ -114,8 +114,12 @@ function Index() {
         <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-12">
           <div className="w-full max-w-md bg-[#09120e]/90 border border-emerald-500/30 rounded-2xl p-6 sm:p-8 backdrop-blur-xl shadow-[0_0_40px_rgba(16,185,129,0.15)]">
             <div className="text-center space-y-2 mb-8">
-              <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-950 border border-emerald-500/40 text-emerald-400 font-mono text-2xl font-bold shadow-[0_0_20px_rgba(16,185,129,0.3)] mb-2">
-                Z
+              <div className="relative inline-flex items-center justify-center mb-3">
+                <div className="animate-neon-z-flip flex h-16 w-16 items-center justify-center rounded-2xl bg-black/90 border-2 border-emerald-400 text-emerald-300 font-mono text-4xl font-extrabold shadow-[0_0_30px_rgba(16,185,129,0.7),inset_0_0_15px_rgba(16,185,129,0.4)]">
+                  <span className="select-none text-emerald-300 drop-shadow-[0_0_12px_rgba(52,211,153,1)]">
+                    Z
+                  </span>
+                </div>
               </div>
               <h1 className="text-2xl font-bold font-mono tracking-wide text-emerald-100 uppercase">
                 Zabelê Store
