@@ -18,6 +18,11 @@ function Index() {
         <p className="mt-4 font-mono text-sm md:text-base text-emerald-400/80 tracking-widest uppercase">
           Matrix Rain & Retro Snake
         </p>
+        <div className="mt-6 inline-block animate-move-side">
+          <p className="font-mono text-lg md:text-2xl font-bold tracking-widest uppercase text-neon-cyan">
+            PAULO RICÃO
+          </p>
+        </div>
       </div>
     </main>
   );

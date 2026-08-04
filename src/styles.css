@@ -162,3 +162,26 @@
     0 0 40px #ffffff,
     0 0 80px #ffffff;
 }
+
+.text-neon-cyan {
+  color: #00ffff;
+  text-shadow:
+    0 0 5px #00ffff,
+    0 0 10px #00ffff,
+    0 0 20px #00ffff,
+    0 0 40px #00ffff,
+    0 0 80px #00ffff;
+}
+
+@keyframes move-side {
+  0%, 100% {
+    transform: translateX(-25vw);
+  }
+  50% {
+    transform: translateX(25vw);
+  }
+}
+
+.animate-move-side {
+  animation: move-side 4s ease-in-out infinite;
+}
