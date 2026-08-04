@@ -51,7 +51,7 @@ function Index() {
           </div>
         </div>
 
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-neon-white drop-shadow-[0_0_20px_rgba(0,255,100,0.8)]">
+        <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-neon-white drop-shadow-[0_0_10px_rgba(0,255,100,0.4)]">
           INOVAÇÃO SEM LIMITES
         </h1>
         <p className="mt-4 font-mono text-sm md:text-base text-emerald-400/80 tracking-widest uppercase">
