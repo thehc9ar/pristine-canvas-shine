@@ -9,7 +9,7 @@ export const Route = createFileRoute("/")({
 function Index() {
   return (
     <main className="relative min-h-screen w-full flex items-center justify-center overflow-hidden bg-black select-none">
-      <MatrixBackground />
+      <MatrixBackground className="fixed inset-0 z-0 h-full w-full bg-black" />
       <SnakeOverlay className="pointer-events-none fixed inset-0 h-full w-full z-0" />
       <div className="relative z-10 text-center px-4 pointer-events-none">
         <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-neon-white drop-shadow-[0_0_20px_rgba(0,255,100,0.8)]">

@@ -76,8 +76,8 @@ export function SnakeOverlay({ className }: { className?: string }) {
       ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
       body.forEach((segment, index) => {
         const fade = 1 - index / body.length;
-        ctx.fillStyle = `oklch(0.78 0.22 145 / ${(fade * 0.85).toFixed(3)})`;
-        ctx.shadowColor = "oklch(0.78 0.22 145 / 0.7)";
+        ctx.fillStyle = `rgba(0, 255, 102, ${(fade * 0.85).toFixed(3)})`;
+        ctx.shadowColor = "rgba(0, 255, 102, 0.7)";
         ctx.shadowBlur = index === 0 ? 12 : 6 * fade;
         ctx.fillRect(segment.x * CELL + 1, segment.y * CELL + 1, CELL - 3, CELL - 3);
       });

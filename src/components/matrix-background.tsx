@@ -16,8 +16,8 @@ export function MatrixBackground({ className }: { className?: string }) {
     const fontSize = 16;
     let columns = Math.floor(window.innerWidth / fontSize);
     let drops: number[] = new Array(columns)
-      .fill(1)
-      .map(() => Math.floor(Math.random() * -50));
+      .fill(0)
+      .map(() => Math.floor(Math.random() * (window.innerHeight / fontSize)));
 
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -59,7 +59,7 @@ export function MatrixBackground({ className }: { className?: string }) {
 
           // Green character trail right above
           const prevChar = chars.charAt(Math.floor(Math.random() * chars.length));
-          ctx.fillStyle = "oklch(0.78 0.22 145)";
+          ctx.fillStyle = "#00ff66";
           ctx.shadowBlur = 0;
           ctx.fillText(prevChar, x, y - fontSize);
         }
@@ -87,7 +87,7 @@ export function MatrixBackground({ className }: { className?: string }) {
   return (
     <canvas
       ref={canvasRef}
-      className={className ?? "fixed inset-0 -z-10 h-full w-full bg-black"}
+      className={className ?? "fixed inset-0 z-0 h-full w-full bg-black"}
       aria-hidden
     />
   );
