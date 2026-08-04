@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SnakeOverlay } from "@/components/snake-overlay";
+import { MatrixBackground } from "@/components/matrix-background";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -31,16 +32,17 @@ const destaques = [
 
 function Index() {
   return (
-    <main className="relative mx-auto flex min-h-screen max-w-2xl flex-col justify-center px-6 py-20">
+    <main className="relative mx-auto flex min-h-screen max-w-2xl flex-col justify-center px-6 py-20 overflow-hidden">
+      <MatrixBackground />
       <SnakeOverlay />
       <h1 className="relative text-3xl font-bold tracking-tight text-destructive sm:text-5xl uppercase italic">
         Inovação Sem Limites
       </h1>
-      <p className="relative mt-5 text-base leading-7 text-muted-foreground">
+      <p className="relative mt-5 text-base leading-7 text-white drop-shadow-sm">
         Um projeto feito para resolver problemas reais com simplicidade: boa
         experiência de uso e qualidade técnica, sem excesso.
       </p>
-      <ul className="relative mt-8 space-y-2 text-sm text-muted-foreground">
+      <ul className="relative mt-8 space-y-2 text-sm text-white drop-shadow-sm">
         {destaques.map((item) => (
           <li key={item} className="flex items-center gap-2">
             <span aria-hidden className="size-1.5 rounded-full bg-foreground" />
